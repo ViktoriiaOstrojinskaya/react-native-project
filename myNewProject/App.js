@@ -4,8 +4,8 @@ import RegistrationScreen from "./components/screens/auth/RegisterScreen";
 
 const App = () => {
   return (
-    // <LoginScreen />
-    <RegistrationScreen />
+    <LoginScreen />
+    // <RegistrationScreen />
   );
 };
 
