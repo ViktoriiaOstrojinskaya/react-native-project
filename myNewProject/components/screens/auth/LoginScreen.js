@@ -10,7 +10,6 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
-  useWindowDimensions,
 } from "react-native";
 
 import * as Font from "expo-font";
@@ -28,8 +27,8 @@ const LoginScreen = () => {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [appIsReady, setAppIsReady] = useState(false);
 
-  const { height, width } = useWindowDimensions();
-  console.log({ height, width });
+  // const { height, width } = useWindowDimensions();
+  // console.log({ height, width });
 
   useEffect(() => {
     async function prepare() {
