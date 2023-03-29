@@ -10,51 +10,32 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
+  Dimensions,
 } from "react-native";
-
-import * as Font from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
-
-SplashScreen.preventAutoHideAsync();
 
 const initialState = {
   email: "",
   password: "",
 };
 
-const LoginScreen = () => {
+export default function LoginScreen({ navigation }) {
   const [state, setState] = useState(initialState);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-  const [appIsReady, setAppIsReady] = useState(false);
-
-  // const { height, width } = useWindowDimensions();
-  // console.log({ height, width });
+  const [dimensions, setDimensions] = useState(
+    Dimensions.get("window").width - 16 * 2
+  );
 
   useEffect(() => {
-    async function prepare() {
-      try {
-        await Font.loadAsync({
-          "Roboto-Regular": require("../../../assets/fonts/Roboto-Regular.ttf"),
-          "Roboto-Medium": require("../../../assets/fonts/Roboto-Medium.ttf"),
-        });
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setAppIsReady(true);
-      }
-    }
-    prepare();
+    const onChange = () => {
+      const width = Dimensions.get("window").width - 16 * 2;
+
+      setDimensions(width);
+    };
+    Dimensions.addEventListener("change", onChange);
+    return () => {
+      Dimensions.removeEventListener("change", onChange);
+    };
   }, []);
-
-  const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
-      await SplashScreen.hideAsync();
-    }
-  }, [appIsReady]);
-
-  if (!appIsReady) {
-    return null;
-  }
 
   const keyboardHide = () => {
     setIsShowKeyboard(false);
@@ -65,10 +46,10 @@ const LoginScreen = () => {
 
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
-      <View style={styles.container} onLayout={onLayoutRootView}>
+      <View style={styles.container}>
         <ImageBackground
           style={styles.image}
-          source={require("../../../assets/image/main-bg.png")}
+          source={require("../../assets/image/main-bg.png")}
         >
           <View
             style={{
@@ -79,7 +60,7 @@ const LoginScreen = () => {
             <KeyboardAvoidingView
               behavior={Platform.OS === "ios" ? "padding" : "height"}
             >
-              <View style={styles.form}>
+              <View style={{ ...styles.form, width: dimensions }}>
                 <Text style={styles.inputTitle} textAlign="center">
                   Log in
                 </Text>
@@ -125,7 +106,10 @@ const LoginScreen = () => {
                   <Text style={styles.btnTitle}>Log in</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.footer}>
+                <TouchableOpacity
+                  style={styles.footer}
+                  onPress={() => navigation.navigate("registration")}
+                >
                   <Text style={styles.footerTitle}>
                     Already have the account? Sing up
                   </Text>
@@ -137,7 +121,7 @@ const LoginScreen = () => {
       </View>
     </TouchableWithoutFeedback>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -199,5 +183,3 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Regular",
   },
 });
-
-export default LoginScreen;

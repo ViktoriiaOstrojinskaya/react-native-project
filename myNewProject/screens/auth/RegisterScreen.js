@@ -9,12 +9,8 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
+  Dimensions,
 } from "react-native";
-
-import * as Font from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
-
-SplashScreen.preventAutoHideAsync();
 
 const initialState = {
   login: "",
@@ -22,50 +18,37 @@ const initialState = {
   password: "",
 };
 
-const RegistrationScreen = () => {
+export default function RegistrationScreen({ navigation }) {
   const [state, setState] = useState(initialState);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-  const [appIsReady, setAppIsReady] = useState(false);
+  const [dimensions, setDimensions] = useState(
+    Dimensions.get("window").width - 16 * 2
+  );
 
   useEffect(() => {
-    async function prepare() {
-      try {
-        await Font.loadAsync({
-          "Roboto-Regular": require("../../../assets/fonts/Roboto-Regular.ttf"),
-          "Roboto-Medium": require("../../../assets/fonts/Roboto-Medium.ttf"),
-        });
-      } catch (e) {
-        console.warn(e);
-      } finally {
-        setAppIsReady(true);
-      }
-    }
-    prepare();
+    const onChange = () => {
+      const width = Dimensions.get("window").width - 16 * 2;
+
+      setDimensions(width);
+    };
+    Dimensions.addEventListener("change", onChange);
+    return () => {
+      Dimensions.removeEventListener("change", onChange);
+    };
   }, []);
-
-  const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
-      await SplashScreen.hideAsync();
-    }
-  }, [appIsReady]);
-
-  if (!appIsReady) {
-    return null;
-  }
 
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
-    console.log(state);
     setState(initialState);
   };
 
   return (
     <TouchableWithoutFeedback onPress={keyboardHide}>
-      <View style={styles.container} onLayout={onLayoutRootView}>
+      <View style={styles.container}>
         <ImageBackground
           style={styles.image}
-          source={require("../../../assets/image/main-bg.png")}
+          source={require("../../assets/image/main-bg.png")}
         >
           <View
             style={{
@@ -76,11 +59,7 @@ const RegistrationScreen = () => {
             <KeyboardAvoidingView
               behavior={Platform.OS === "ios" ? "padding" : "height"}
             >
-              <View
-                style={{
-                  ...styles.form,
-                }}
-              >
+              <View style={{ ...styles.form, width: dimensions }}>
                 <Text style={styles.inputTitle} textAlign="center">
                   Registration
                 </Text>
@@ -148,7 +127,10 @@ const RegistrationScreen = () => {
                   <Text style={styles.btnTitle}>Sing up</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.footer}>
+                <TouchableOpacity
+                  style={styles.footer}
+                  onPress={() => navigation.navigate("login")}
+                >
                   <Text style={styles.footerTitle}>
                     Do you have account? Log in
                   </Text>
@@ -160,7 +142,7 @@ const RegistrationScreen = () => {
       </View>
     </TouchableWithoutFeedback>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -222,5 +204,3 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Regular",
   },
 });
-
-export default RegistrationScreen;
