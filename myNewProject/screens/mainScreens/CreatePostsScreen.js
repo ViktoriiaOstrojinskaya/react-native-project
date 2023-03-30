@@ -43,6 +43,10 @@ const CreatePostsScreen = ({ navigation }) => {
         </TouchableOpacity>
       </Camera>
 
+      <View style={styles.labelCamera}>
+        <Text style={styles.labelCameraTitle}>Upload photo</Text>
+      </View>
+
       <View style={{ ...styles.descriptionContainer, marginTop: 32 }}>
         <TextInput
           placeholder="Name..."
@@ -88,7 +92,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   camera: {
-    height: 240,
+    flex: 1,
     marginTop: 32,
     marginHorizontal: 16,
     backgroundColor: "#F6F6F6",
@@ -98,10 +102,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  labelCamera: {
+    paddingTop: 8,
+    paddingLeft: 16,
+  },
+  labelCameraTitle: {
+    color: "#BDBDBD",
+    fontSize: 16,
+    fontFamily: "Roboto-Regular",
+  },
   iconContainer: {
     position: "absolute",
     borderColor: "#fff",
-    backgroundColor: "#fff",
+    backgroundColor: "rgba(255, 255, 255, 0.3)",
     width: 60,
     height: 60,
     borderRadius: 50,
@@ -116,7 +129,7 @@ const styles = StyleSheet.create({
   takePhoto: {
     flex: 1,
     height: 240,
-    width: 343,
+    width: 350,
     borderColor: "red",
     borderWidth: 2,
     borderRadius: 8,
@@ -134,11 +147,12 @@ const styles = StyleSheet.create({
   btnTitle: {
     color: "#BDBDBD",
     fontSize: 16,
+    fontFamily: "Roboto-Regular",
   },
   iconTrash: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 120,
   },
   iconBackground: {
     backgroundColor: "#f6f6f6",
@@ -155,6 +169,8 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     height: 50,
+    fontSize: 16,
+    fontFamily: "Roboto-Regular",
   },
 });
 

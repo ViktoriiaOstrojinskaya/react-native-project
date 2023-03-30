@@ -11,7 +11,7 @@ export default function App() {
   useEffect(() => {
     async function prepare() {
       try {
-        // SplashScreen.preventAutoHideAsync();
+        //await SplashScreen.preventAutoHideAsync();
         await Font.loadAsync({
           "Roboto-Regular": require("./assets/fonts/Roboto-Regular.ttf"),
           "Roboto-Medium": require("./assets/fonts/Roboto-Medium.ttf"),
